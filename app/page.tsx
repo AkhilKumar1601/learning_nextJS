@@ -1,6 +1,32 @@
+import prisma from "@/db";
 
-export default function Home() {
+
+async function getUserDetails() {
+  try {
+    const user = await prisma.user.findFirst({});
+	  return {
+      name: user?.username,
+      email: user?.username 
+    }
+  }  catch(e) {
+    console.log(e);
+  }
+}
+
+export default async function Home() {
+  const userData = await getUserDetails();
+
   return (
-       <div>Hello dear, How are you!</div>
- );
+    <div className="flex flex-col justify-center h-screen">
+        <div className="flex justify-center">
+            <div className="border p-8 rounded">
+                <div>
+                    Name: {userData?.name}
+                </div>
+                
+                {userData?.email}
+            </div>
+        </div>
+    </div>
+  )
 }
